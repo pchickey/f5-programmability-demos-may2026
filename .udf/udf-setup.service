@@ -1,0 +1,9 @@
+[Unit]
+Description=Setup UDF Resources
+After=network.target
+
+[Service]
+ExecStart=/root/f5-programmability-demos-may2026/.udf/udf-setup.sh
+
+[Install]
+WantedBy=default.target
