@@ -1,0 +1,14 @@
+{
+  "folders": [
+    {
+      "name": "01 Example: Hello World",
+      "path": "01-hello-world"
+    },
+    {
+      "name": "02 Example: Read and Write HTTP Headers",
+      "path": "02-read-write-headers"
+    },
+  ],
+  "settings": {}
+}
+
