@@ -3,6 +3,8 @@ Description=Setup UDF Resources
 After=network.target
 
 [Service]
+User=ubuntu
+Group=ubuntu
 ExecStart=/home/ubuntu/code-server-config/workspace/.udf/udf-setup.sh
 
 [Install]
