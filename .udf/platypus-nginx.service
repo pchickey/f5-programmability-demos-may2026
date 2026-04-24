@@ -7,7 +7,7 @@ User=ubuntu
 Group=ubuntu
 Environment="PLATYPUS_NGINX=/home/ubuntu/nginx/install/sbin/nginx" "RUST_LOG=platypus=debug" "PLATYPUS_NGINX_WASMTIME=/home/ubuntu/nginx/nginx-wasmtime"
 WorkingDirectory=/home/ubuntu/platypus
-ExecStart=/home/ubuntu/platypus/platypus run --default-host http://10.1.1.4:8000 --build-dir /home/ubuntu/platypus/nginx-build 10.1.1.4:9000 nginx
+ExecStart=/home/ubuntu/platypus/platypus run --default-host http://10.1.1.4:8000 --build-dir /home/ubuntu/platypus/nginx-build 10.1.1.4:9000 --add-service /home/ubuntu/nginx/example-origin.f5service nginx
 
 [Install]
 WantedBy=default.target
