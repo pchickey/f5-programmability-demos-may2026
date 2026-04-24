@@ -1,0 +1,12 @@
+[Unit]
+Description=Launch Platypus for NGINX
+After=udf-git-pull.service
+
+[Service]
+User=ubuntu
+Group=ubuntu
+Environment="PLATYPUS_NGINX=/home/ubuntu/nginx/install/sbin/nginx"
+ExecStart=/home/ubuntu/platypus/platypus run --default-host 10.1.1.4 --build-dir /home/ubuntu/platypus/nginx-build 10.1.1.4:9000 nginx 
+
+[Install]
+WantedBy=default.target

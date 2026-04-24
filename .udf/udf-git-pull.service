@@ -1,0 +1,12 @@
+[Unit]
+Description=Git pull latest UDF setup
+After=network.target
+
+[Service]
+User=ubuntu
+Group=ubuntu
+WorkingDirectory=/home/ubuntu/code-server-config/workspace/
+ExecStart=git pull
+
+[Install]
+WantedBy=default.target

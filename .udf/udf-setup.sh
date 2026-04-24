@@ -1,17 +1,20 @@
 #!/bin/bash
+set -ex
+
 PWD=/home/ubuntu/code-server-config/workspace/.udf
 
-# Get the latest version
-cd $PWD
-git fetch
-git pull
-
-# Check if systemctl service is installed
-if ! systemctl list-units --full --all | grep -Fq "udf-setup.service"; then
-    cp $PWD/udf-setup.service /etc/systemd/system/
+if ! systemctl list-units --full --all | grep -Fq "udf-git-pull.service"; then
+    cp $PWD/udf-git-pull.service /etc/systemd/system/
     systemctl daemon-reload
-    systemctl enable udf-setup
-    systemctl start udf-setup
+    systemctl enable udf-git-pull.service
+    systemctl start udf-git-pull.service
 fi
 
+cp $PWD/udf-setup.service /etc/systemd/system/
+cp $PWD/platypus-nginx.service /etc/systemd/system/
+systemctl daemon-reload
 
+systemctl enable udf-setup
+systemctl start udf-setup
+systemctl enable platypus-nginx
+systemctl start platypus-nginx
