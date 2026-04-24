@@ -1,5 +1,5 @@
 #!/bin/bash
-PWD=/root/f5-programmability-demos-may2026/.udf
+PWD=/home/ubuntu/code-server-config/workspace/.udf
 
 # Get the latest version
 cd $PWD
