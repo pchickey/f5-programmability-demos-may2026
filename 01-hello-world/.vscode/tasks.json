@@ -15,12 +15,12 @@
     {
       "label": "Run (in NGINX)",
       "type": "shell",
-      "command": "curl \"http://10.1.1.4:9000/services?name=hello-world\" --data-binary \"@target/wasm32-wasip2/debug/hello_world.wasm\"",
+      "command": "curl \"http://10.1.1.4:9000/services?name=hello-world\" --data-binary \"@target/wasm32-wasip2/debug/hello-world.wasm\"",
       "group": "test",
       "presentation": {
         "reveal": "always",
         "panel": "new"
-      }
+      },
       "dependsOn": ["Build"],
     }
   ]
