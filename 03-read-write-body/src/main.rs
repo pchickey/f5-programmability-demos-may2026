@@ -58,11 +58,11 @@ async fn main(req: Request<Body>) -> Result<Response<Body>, Error> {
             }
 
             // Happy case: we can make a new response. We could forward any or
-            // all of the upstream headers, but lets just forward Server if
-            // its available.
+            // all of the upstream headers, but lets just forward
+            // "x-example-origin" as "x-upstream-example"
             let mut resp = Response::builder();
-            if let Some(upstream_server) = upstream_parts.headers.get("server") {
-                resp = resp.header("upstream-server", upstream_server);
+            if let Some(version) = upstream_parts.headers.get("x-example-origin") {
+                resp = resp.header("x-upstream-example", version);
             }
             // And we just put `upstream_body` here, and wstd will forward it
             // efficiently.
