@@ -1,0 +1,13 @@
+[Unit]
+Description=Launch Platypus for TMM
+After=udf-git-pull.service
+
+[Service]
+User=ubuntu
+Group=ubuntu
+Environment="RUST_LOG=platypus=debug"
+WorkingDirectory=/home/ubuntu/platypus
+ExecStart=/home/ubuntu/platypus/platypus run --default-host http://10.1.1.4:3000 --build-dir /home/ubuntu/platypus/tmm-build 10.1.1.4:9001 tmm --management-port 2000 --registry-cli-exe /home/ubuntu/tmm/registry-cli --host 10.254.1.2
+
+[Install]
+WantedBy=default.target
