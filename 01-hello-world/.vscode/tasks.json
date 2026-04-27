@@ -4,14 +4,24 @@
   "version": "2.0.0",
   "tasks": [
     {
+      "label": "Build",
+      "type": "shell",
+      "command": "cargo build --target wasm32-wasip2",
+      "group": {
+        "kind": "build",
+        "isDefault": true,
+      },
+    },
+    {
       "label": "Run (in NGINX)",
       "type": "shell",
-      "command": "cargo run",
+      "command": "curl \"http://10.1.1.4:9000/services?name=hello-world\" --data-binary \"@target/wasm32-wasip2/debug/hello_world.wasm\"",
       "group": "test",
       "presentation": {
         "reveal": "always",
         "panel": "new"
       }
+      "dependsOn": ["Build"],
     }
   ]
 }
