@@ -8,6 +8,10 @@
       "name": "02 Example: Read and Write HTTP Headers",
       "path": "02-read-write-headers"
     },
+    {
+      "name": "03 Example: Read and Write Body",
+      "path": "03-read-write-body"
+    },
   ],
   "settings": {}
 }
