@@ -1,0 +1,8 @@
+[package]
+name = "read-write-body"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+anyhow = "1.0.102"
+wstd = "0.6.6"
