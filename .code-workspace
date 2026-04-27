@@ -12,6 +12,11 @@
       "name": "03 Example: Read and Write Body",
       "path": "03-read-write-body"
     },
+
+    {
+      "name": "99: Example Origin",
+      "path": "99-example-origin"
+    },
   ],
   "settings": {}
 }
