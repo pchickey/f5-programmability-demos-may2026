@@ -34,7 +34,7 @@ async fn main(req: Request<Body>) -> Result<Response<Body>, Error> {
             // Lets make a request to somewhere - in this case, we have an
             // "example origin" application running already on our NGINX.
             let upstream_resp = Client::new()
-                .send(Request::get("http://10.1.1.4:8000/people.json").body(())?)
+                .send(Request::get("http://10.1.1.4:8001/people.json").body(())?)
                 // HTTP requests are an async operation, so we await the
                 // completion here:
                 .await?;
