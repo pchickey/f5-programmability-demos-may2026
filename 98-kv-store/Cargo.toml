@@ -1,0 +1,11 @@
+[package]
+name = "f5-kv-store"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+anyhow = "1"
+wasi = "0.14.7"
+wit-bindgen = "0.48"
+wstd = "0.6.6"
+

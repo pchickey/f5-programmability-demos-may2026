@@ -1,0 +1,86 @@
+package f5:key-value@0.1.0;
+
+interface key-value-store {
+  use wasi:io/poll@0.2.3.{pollable};
+
+  /// A key: an arbitrary list of bytes.
+  type key = list<u8>;
+
+  /// A value: also an arbitrary list of bytes.
+  type value = list<u8>;
+
+  /// A key-value store.
+  resource store {
+    /// Open a key-value store by name.
+    ///
+    /// The name is arbitrary and different hosts may have different named
+    /// stores.
+    ///
+    /// This signature is the p2 equivalent of:
+    ///
+    ///     open: static async func(name: string) -> future<result<store>>
+    open: static func(name: string) -> future-store;
+
+    /// Get the value associated with the given key from this store, if any.
+    ///
+    /// This signature is the p2 equivalent of:
+    ///
+    ///     get: async func(key: key) -> future<result<option<value>>>
+    get: func(key: key) -> future-value;
+
+    /// Set the value associated with the given key in this store.
+    ///
+    /// Does not wait for the operation to complete.
+    set: func(key: key, value: value) -> result<_, string>;
+
+    /// Delete the value associated with the given key in this store.
+    ///
+    /// Does not wait for the operation to complete.
+    delete: func(key: key) -> result<_, string>;
+  }
+
+  /// The p2 equivalent of a `future<result<store, string>>`
+  resource future-store {
+    /// Get this future's pollable.
+    subscribe: func() -> pollable;
+
+    /// Once the pollable is ready, get the result<store>
+    ///
+    /// Return values:
+    ///
+    /// * `err(_)`: This future's value was already taken.
+    ///
+    /// * `ok(none)`: This future is still pending.
+    ///
+    /// * `ok(some(err(string)))`: This future is completed, but there was an error
+    ///   opening the named key-value store. The `string` contains an error messge.
+    ///
+    /// * `ok(some(ok(store)))`: The future is ready, we successfully opened the
+    ///   key-value store, and here it is.
+    get: func() -> result<option<result<store, string>>>;
+  }
+
+  /// The p2 equivalent of a `future<result<option<value>>>`
+  resource future-value {
+    /// Get this future's pollable.
+    subscribe: func() -> pollable;
+
+    /// Once the pollable is ready, get the underlying `result<option<value>>`.
+    ///
+    /// Return values:
+    ///
+    /// * `err(_)`: This future's value was already taken.
+    ///
+    /// * `ok(none)`: This future is still pending.
+    ///
+    /// * `ok(some(err(string)))`: This future completed but there was an error
+    ///   getting the value.
+    ///
+    /// * `ok(some(ok(none)))`: This future completed, and there is no value
+    ///   associated with the key.
+    ///
+    /// * `ok(some(ok(some(value))))`: The future completed, and this is the value
+    ///   associated with the key.
+    get: func() -> result<option<result<option<value>, string>>>;
+  }
+}
