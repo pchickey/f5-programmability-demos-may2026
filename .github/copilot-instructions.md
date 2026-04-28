@@ -12,13 +12,13 @@ Each demo is its own Cargo project. Work inside the demo directory.
 
 ```sh
 cd 01-hello-world
-cargo build --target wasm32-wasip2   # compile (or just `cargo build` if .cargo/config.toml exists)
+cargo build --target wasm32-wasip2
 # Deploy the compiled binary to platypus:
 curl "http://10.1.1.4:9000/services?name=hello-world" \
   --data-binary "@target/wasm32-wasip2/debug/hello-world.wasm"
 ```
 
-If `.cargo/config.toml` is present in a demo (setting `target = "wasm32-wasip2"` and a runner), `cargo run` deploys automatically. The VS Code "Run (in NGINX)" task in `.vscode/tasks.json` does the same via direct curl.
+The VS Code "Run (in NGINX)" task in `.vscode/tasks.json` builds and deploys automatically via direct curl.
 
 `platypus` POSTs the `.wasm` binary to NGINX's wasmtime module at `http://10.1.1.4:9000/services?name=<service-name>`. No test suite exists; validation is manual via HTTP requests to the deployed service.
 
@@ -26,20 +26,27 @@ If `.cargo/config.toml` is present in a demo (setting `target = "wasm32-wasip2"`
 
 Each demo needs these files alongside `Cargo.toml` and `src/main.rs`:
 
-`.cargo/config.toml`:
-```toml
-[build]
-target = "wasm32-wasip2"
-
-[target.wasm32-wasip2]
-runner = "./.cargo/runner.sh"
-```
-
-`.cargo/runner.sh`:
-```bash
-#!/bin/bash
-set -ex
-curl "http://10.1.1.4:9000/services?name=<service-name>" --data-binary "@$1"
+`.vscode/tasks.json`:
+```json
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build",
+      "type": "shell",
+      "command": "cargo build --target wasm32-wasip2",
+      "group": { "kind": "build", "isDefault": true }
+    },
+    {
+      "label": "Run (in NGINX)",
+      "type": "shell",
+      "command": "curl \"http://10.1.1.4:9000/services?name=<service-name>\" --data-binary \"@target/wasm32-wasip2/debug/<service-name>.wasm\"",
+      "group": "test",
+      "presentation": { "reveal": "always", "panel": "new" },
+      "dependsOn": ["Build"]
+    }
+  ]
+}
 ```
 
 `Cargo.toml` only needs `wstd = "0.6.6"` as a dependency. The entry point is always `#[wstd::http_server]` on `async fn main`.
@@ -52,7 +59,7 @@ curl "http://10.1.1.4:9000/services?name=<service-name>" --data-binary "@$1"
   async fn main(req: Request<Body>) -> Result<Response<Body>, Error>
   ```
 - **Runtime**: single-threaded `wstd` reactor. `tokio`/`smol`/`async-std` do not link. Never use `std::thread::sleep` or blocking I/O inside `async`.
-- **Deployment target**: `wasm32-wasip2` (set in `.cargo/config.toml` in each demo). Never target `wasm32-wasip1`.
+- **Deployment target**: `wasm32-wasip2` (passed via `--target` flag or set in `.vscode/tasks.json`). Never target `wasm32-wasip1`.
 - **`platypus`** orchestrates NGINX + wasm services on the UDF host. Systemd services in `.udf/` manage startup.
 - **`99-example-origin`** is a mock upstream server (not an nginx-wasm guest demo) that exposes `/people.json`, `/show_headers`, `/image.png`, `/metrics.json`, and `/reader`. Demos that call outbound HTTP target it at `http://10.1.1.4:8001/`.
 
