@@ -13,6 +13,7 @@ fi
 cp $PWD/udf-setup.service /etc/systemd/system/
 cp $PWD/platypus-nginx.service /etc/systemd/system/
 cp $PWD/platypus-tmm.service /etc/systemd/system/
+cp $PWD/nginx-for-tmm.service /etc/systemd/system/
 systemctl daemon-reload
 
 systemctl enable udf-setup
@@ -21,3 +22,5 @@ systemctl enable platypus-nginx
 systemctl start platypus-nginx
 systemctl enable platypus-tmm
 systemctl start platypus-tmm
+systemctl enable nginx-for-tmm
+systemctl start nginx-for-tmm

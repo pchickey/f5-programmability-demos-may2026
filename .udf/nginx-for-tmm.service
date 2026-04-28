@@ -1,0 +1,14 @@
+[Unit]
+Description=NGINX forwarding to BIG-IP
+After=udf-git-pull.service
+
+[Service]
+Type=forking
+PIDFile=/home/ubuntu/code-server-config/workspace/.udf/nginx-for-tmm/logs/nginx.pid
+ExecStartPre=/home/ubuntu/nginx/install/sbin/nginx -t -p /home/ubuntu/code-server-config/workspace/.udf/nginx-for-tmm/
+ExecStart=/home/ubuntu/nginx/install/sbin/nginx -p /home/ubuntu/code-server-config/workspace/.udf/nginx-for-tmm/
+ExecReload=/bin/kill -s HUP $MAINPID
+ExecStop=/bin/kill -s QUIT $MAINPID
+
+[Install]
+WantedBy=default.target
