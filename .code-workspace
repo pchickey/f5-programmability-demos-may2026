@@ -5,16 +5,20 @@
       "path": "01-hello-world"
     },
     {
-      "name": "02 Example: Read and Write HTTP Headers",
+      "name": "02 Example: Read and Write Headers",
       "path": "02-read-write-headers"
     },
     {
-      "name": "03 Example: Read and Write Body",
-      "path": "03-read-write-body"
+      "name": "03 Example: Redact Response Body",
+      "path": "03-redact-response-body",
     },
     {
-      "name": "04 Demo: Weather",
-      "path": "04-weather-demo"
+      "name": "04 Example: More Body Mechanisms"
+      "path": "04-more-body-mechanisms",
+    },
+    {
+      "name": "05 Demo: Weather App",
+      "path": "05-weather-demo"
     },
     {
       "name": "98: Key-Value Store support crate"

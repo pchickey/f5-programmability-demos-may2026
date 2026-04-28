@@ -1,5 +1,5 @@
 [package]
-name = "redact-pii-serde"
+name = "redact-response-body"
 version = "0.1.0"
 edition = "2024"
 

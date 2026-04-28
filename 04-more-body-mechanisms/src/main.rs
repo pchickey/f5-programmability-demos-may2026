@@ -1,5 +1,7 @@
 use anyhow::anyhow;
 use wstd::http::{Body, Client, Error, Request, Response, StatusCode};
+use wstd::task::sleep;
+use wstd::time::Duration;
 
 #[wstd::http_server]
 async fn main(req: Request<Body>) -> Result<Response<Body>, Error> {
@@ -28,9 +30,9 @@ async fn main(req: Request<Body>) -> Result<Response<Body>, Error> {
             let (_req_parts, req_body) = req.into_parts();
             Ok(Response::new(req_body))
         }
+        // Making a Body out of another Body is much more useful when you're
+        // using it to forward a response body:
         "/forward_response_body" => {
-            // Here's a really powerful tool this is your first time seeing:
-            // the http Client!
             // Lets make a request to somewhere - in this case, we have an
             // "example origin" application running already on our NGINX.
             let upstream_resp = Client::new()
@@ -67,6 +69,27 @@ async fn main(req: Request<Body>) -> Result<Response<Body>, Error> {
             // And we just put `upstream_body` here, and wstd will forward it
             // efficiently.
             Ok(resp.body(upstream_body)?)
+        }
+        // HTTP bodies are streams, which means they can be a sequence of
+        // chunks. Wstd can produce and consume bodies chunk by chunk as well.
+        // This example shows producing a body in chunks.
+        //
+        // Streaming behavior is fully supported in BIG-IP, but not yet in
+        // NGINX. This example will produce 4 separate data frames sent 0.5s
+        // apart in BIG-IP, but it will produce a single data frame sent after
+        // 2s in NGINX.
+        "/stream_response_body" => {
+            use futures_lite::{stream, StreamExt};
+            // Start with something to iterate through
+            let dogs = vec!["Gussie", "Willa", "Sparky", "Benny"];
+            // stream::iter turns the Vec into a Stream. StreamExt::then
+            // allows us to apply an async closure to each item in the Stream.
+            let stream = stream::iter(dogs).then(|dog| async move {
+                sleep(Duration::from_millis(500)).await;
+                format!("Hello, {dog}\n")
+            });
+            // Finally, we can make a body out of the Stream.
+            Ok(Response::new(Body::from_stream(stream)))
         }
         _ => Ok(Response::builder()
             .status(StatusCode::NOT_FOUND)

@@ -15,7 +15,7 @@
     {
       "label": "Run (in NGINX)",
       "type": "shell",
-      "command": "curl \"http://10.1.1.4:9000/services?name=redact-pii-serde\" --data-binary \"@target/wasm32-wasip2/debug/redact-pii-serde.wasm\"",
+      "command": "curl \"http://10.1.1.4:9000/services?name=more-body-mechanisms\" --data-binary \"@target/wasm32-wasip2/debug/more-body-mechanisms.wasm\"",
       "group": "test",
       "presentation": {
         "reveal": "always",
@@ -26,7 +26,7 @@
     {
       "label": "Run (in BIG-IP)",
       "type": "shell",
-      "command": "curl \"http://10.1.1.4:9001/services?name=redact-pii-serde\" --data-binary \"@target/wasm32-wasip2/debug/redact-pii-serde.wasm\"",
+      "command": "curl \"http://10.1.1.4:9001/services?name=more-body-mechanisms\" --data-binary \"@target/wasm32-wasip2/debug/more-body-mechanisms.wasm\"",
       "group": "test",
       "presentation": {
         "reveal": "always",

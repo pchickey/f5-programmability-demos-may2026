@@ -15,7 +15,7 @@
     {
       "label": "Run (in NGINX)",
       "type": "shell",
-      "command": "curl \"http://10.1.1.4:9000/services?name=read-write-body\" --data-binary \"@target/wasm32-wasip2/debug/read-write-body.wasm\"",
+      "command": "curl \"http://10.1.1.4:9000/services?name=redact-response-body\" --data-binary \"@target/wasm32-wasip2/debug/redact-response-body.wasm\"",
       "group": "test",
       "presentation": {
         "reveal": "always",
@@ -26,7 +26,7 @@
     {
       "label": "Run (in BIG-IP)",
       "type": "shell",
-      "command": "curl \"http://10.1.1.4:9001/services?name=read-write-body\" --data-binary \"@target/wasm32-wasip2/debug/read-write-body.wasm\"",
+      "command": "curl \"http://10.1.1.4:9001/services?name=redact-response-body\" --data-binary \"@target/wasm32-wasip2/debug/redact-response-body.wasm\"",
       "group": "test",
       "presentation": {
         "reveal": "always",
