@@ -12,7 +12,10 @@
       "name": "03 Example: Read and Write Body",
       "path": "03-read-write-body"
     },
-
+    {
+      "name": "04 Demo: Weather",
+      "path": "04-weather-demo"
+    },
     {
       "name": "98: Key-Value Store support crate"
       "path": "98-kv-store"
