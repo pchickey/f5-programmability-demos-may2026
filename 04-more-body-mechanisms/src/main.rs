@@ -79,7 +79,7 @@ async fn main(req: Request<Body>) -> Result<Response<Body>, Error> {
         // apart in BIG-IP, but it will produce a single data frame sent after
         // 2s in NGINX.
         "/stream_response_body" => {
-            use futures_lite::{stream, StreamExt};
+            use futures_lite::{StreamExt, stream};
             // Start with something to iterate through
             let dogs = vec!["Gussie", "Willa", "Sparky", "Benny"];
             // stream::iter turns the Vec into a Stream. StreamExt::then
