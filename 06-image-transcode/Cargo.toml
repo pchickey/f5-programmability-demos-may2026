@@ -1,0 +1,7 @@
+[package]
+name = "image-transcode"
+edition = "2024"
+
+[dependencies]
+image = "0.25.8"
+wstd = "0.6.6"
