@@ -13,7 +13,7 @@ async fn main(req: Request<Body>) -> Result<Response<Body>, Error> {
 
     // Fetch a png from the origin
     let mut origin_resp = Client::new()
-        .send(Request::get("http://10.1.1.4:8001/mthood.png").body(())?)
+        .send(Request::get("http://10.1.1.4:8001/image.png").body(())?)
         .await?;
 
     // Collect the body as a slice of bytes:
