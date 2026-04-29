@@ -19,11 +19,11 @@ async fn main(req: Request<Body>) -> Result<Response<Body>, Error> {
 
     // Conditional logic on the user agent.
     if let Some(user_agent) = req.headers().get("User-Agent") {
-       let user_agent = user_agent.to_str()?;
-       let user_agent = user_agent.to_lowercase();
-       if user_agent.contains("curl") {
+        let user_agent = user_agent.to_str()?;
+        let user_agent = user_agent.to_lowercase();
+        if user_agent.contains("curl") {
             resp_body_contents.push_str("<h3>The user agent was curl</h3>\n");
-       }
+        }
     }
 
     resp_body_contents.push_str("</body>\n</html>\n");
