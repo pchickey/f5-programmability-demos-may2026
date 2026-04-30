@@ -19,10 +19,10 @@ async fn main(mut req: Request<Body>) -> Result<Response<Body>, Error> {
     let kv_store = F5KvStore::new().await?;
     let prompt = req.body_mut().str_contents().await?;
 
-    let proxied_request = Request::post("http://127.0.0.1:11434/api/generate")
+    let proxied_request = Request::post("http://10.1.1.4:11434/api/generate")
         .body(Body::from_json(&serde_json::json!({
             "model": "gemma3:1b",
-            "stream": "false",
+            "stream": false,
             "prompt": prompt,
         }))?)
         .expect("construct request POST /api/generate to olamma");
@@ -30,7 +30,7 @@ async fn main(mut req: Request<Body>) -> Result<Response<Body>, Error> {
     let mut response = Client::new()
         .send(proxied_request)
         .await
-        .context("olamma should be running at 127.0.0.1:11434 and respond to POST /api/generate")?;
+        .context("olamma should be running at 10.1.1.4:11434 and respond to POST /api/generate")?;
 
     let mut val: Value = response
         .body_mut()
