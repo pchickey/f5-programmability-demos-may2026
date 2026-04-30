@@ -25,6 +25,10 @@
       "path": "06-image-transcode",
     },
     {
+      "name": "07: LLM Metrics Aggregator",
+      "path": "07-llm-metrics-aggregator",
+    },
+    {
       "name": "98: Key-Value Store support crate"
       "path": "98-kv-store",
     },
