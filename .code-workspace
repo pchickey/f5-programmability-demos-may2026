@@ -1,46 +1,45 @@
 {
   "folders": [
     {
-      "name": "00: Introduction"
-      "path": "00-introduction",
+      "name": "00: Introduction",
+      "path": "00-introduction"
     },
     {
       "name": "01: Hello World",
-      "path": "01-hello-world",
+      "path": "01-hello-world"
     },
     {
       "name": "02: Read and Write Headers",
-      "path": "02-read-write-headers",
+      "path": "02-read-write-headers"
     },
     {
       "name": "03: Redact Response Body",
-      "path": "03-redact-response-body",
+      "path": "03-redact-response-body"
     },
     {
-      "name": "04: More Body Mechanisms"
-      "path": "04-more-body-mechanisms",
+      "name": "04: More Body Mechanisms",
+      "path": "04-more-body-mechanisms"
     },
     {
       "name": "05 Demo: Weather App",
-      "path": "05-weather-demo",
+      "path": "05-weather-demo"
     },
     {
       "name": "06: Image Transcode",
-      "path": "06-image-transcode",
+      "path": "06-image-transcode"
     },
     {
       "name": "07: LLM Metrics Aggregator",
-      "path": "07-llm-metrics-aggregator",
+      "path": "07-llm-metrics-aggregator"
     },
     {
-      "name": "98: Key-Value Store support crate"
-      "path": "98-kv-store",
+      "name": "98: Key-Value Store support crate",
+      "path": "98-kv-store"
     },
     {
       "name": "99: Example Origin",
-      "path": "99-example-origin",
-    },
+      "path": "99-example-origin"
+    }
   ],
   "settings": {}
 }
-
