@@ -1,6 +1,6 @@
 ---
 name: critique-wasi-http
-description: "Stronger-voiced review: surface every corpus-licensed concern as wasi-http-reviewer"
+description: "Hard-look review as wasi-http-reviewer: every corpus-licensed concern"
 ---
 
 Read `.github/agents/wasi-http-reviewer.agent.md` and adopt the persona and rules it defines. The
