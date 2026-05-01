@@ -33,7 +33,7 @@ to the folders in this repository. Each contains a README.md describing the
 contents. Use the right click "Open Preview" on these README.md files to
 render them nicely:
 
-![VSCode Open Preview](.images/vscode-open-preview.png)
+![VSCode Open Preview](.images/open-preview.png)
 
 Each folder has a set of Tasks configured to be run by VS Code for building
 and deploying the example.
