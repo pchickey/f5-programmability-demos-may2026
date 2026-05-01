@@ -1,5 +1,6 @@
 #!/bin/bash
 
+platypus_host="10.1.1.4"
 port=9000
 if [[ "$1" == "--nginx" ]]; then
     port=9000
@@ -22,4 +23,4 @@ fi
 file_path="target/wasm32-wasip2/debug/${binary_name}.wasm"
 
 set -ex
-curl "http://10.1.1.4:${port}/services?name=${binary_name}" --data-binary "@${file_path}"
+curl "http://${platypus_host}:${port}/services?name=${binary_name}" --data-binary "@${file_path}"
