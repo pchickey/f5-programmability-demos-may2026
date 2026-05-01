@@ -1,6 +1,10 @@
 {
   "folders": [
     {
+      "name": "00: Introduction"
+      "path": "00-introduction",
+    },
+    {
       "name": "01: Hello World",
       "path": "01-hello-world",
     },
