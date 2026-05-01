@@ -14,6 +14,12 @@
       "type": "shell",
       "command": "tail -f /nginx/logs/access.log",
       "group": "test"
+    },
+    {
+      "label": "New Project in this Workspace",
+      "type": "shell",
+      "command": "./.vscode/new.sh",
+      "group": "test"
     }
   ]
 }
