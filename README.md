@@ -32,8 +32,20 @@ More information on using VS Code in [Introduction/README.md][intro-readme].
 
 ### NGINX with Wasm Programmability
 
-The Ubuntu host is running open-source NGINX, built with F5's prototype Wasm
-Programmability module nginx-wasm.
+The Ubuntu host is running open-source NGINX, and includes F5's prototype Wasm
+Programmability module `nginx-wasm`.
+
+You can access NGINX's default Wasm service by clicking the button `NGINX WASM
+DEFAULT SERVICE`. It is available on the UDF network at `10.1.1.4:8000`.
+
+Additionally, NGINX is running an "Example Origin" Wasm service, accessible by
+clicking the button `NGINX WASM EXAMPLE ORIGIN`. It is available on the UDF
+network at `10.1.1.4:8001`. Many of the other programs hard-code this address
+to make requests to this service.
+
+The source code for the Example Origin is in this repository, but you don't
+have to build and deploy it unless you want to make modifications - it is
+already running by default.
 
 ### BIG-IP with Wasm Programmability
 
@@ -45,7 +57,7 @@ There is no TMOS running on this system providing any associated BIG-IP
 control plane or features, and the BIG-IP is not configurable beyond through
 use of its prototype Wasm Control Plane.
 
-The BIG-IP's default wasm service is available on a network private to the
+The BIG-IP's default Wasm service is available on a network private to the
 Ubuntu host at `10.254.1.2:3000`.
 
 There is a trivial NGINX providing a transparent proxy of this BIG-IP service
@@ -55,9 +67,9 @@ You can access this service over the UDF's internet bridge by clicking the
 button `BIG-IP DEFAULT SERVICE`. Note that this access does proxy through
 NGINX.
 
-A major restriction of this BIG-IP is that it *cannot reach services running on
-the `10.1.1.x` subnet*. This means that any demo programs using the NGINX
-Example Origin service *will not work*. We have called this out in the README
+A major restriction of this BIG-IP is that it **cannot reach services running on
+the `10.1.1.x` subnet**. This means that any demo programs using the NGINX
+Example Origin service **will not work**. We have called this out in the README
 of each relevant folder.
 
 The key-value store accessible by Wasm Programmability is implemented using
@@ -83,6 +95,20 @@ running at `10.1.1.4:9000`.
 The platypus instance for BIG-IP is available in the UDF by clicking the button
 labeled `BIG-IP WASM SERVICE MANAGER`. Internally to the UDF deployent, it is
 running at `10.1.1.4:9001`.
+
+If you don't want to use the web browser frontend, you can use the API using
+curl or whatever else you like. You can do so via the UDF domain, or, in these
+examples, locally on the ubuntu host using the VS Code terminal.
+
+Get a listing of the services with `GET /services`:
+```
+curl http://10.1.1.4:9000/services | jq
+```
+
+Start running a new service with `POST /services`:
+```
+curl http://10.1.1.4:9000/services?name=put-a-name-here --binary-data "@path/to/your.wasm" 
+```
 
 ## Bugs
 
