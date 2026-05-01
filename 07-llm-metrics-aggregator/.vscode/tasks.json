@@ -6,32 +6,24 @@
     {
       "label": "Build",
       "type": "shell",
-      "command": "cargo build --target wasm32-wasip2",
+      "command": "../common/build.sh",
       "group": {
         "kind": "build",
         "isDefault": true,
       },
     },
     {
-      "label": "Run (in NGINX)",
+      "label": "Run in NGINX",
       "type": "shell",
-      "command": "curl \"http://10.1.1.4:9000/services?name=llm-metrics-aggregator\" --data-binary \"@target/wasm32-wasip2/debug/llm-metrics-aggregator.wasm\"",
+      "command": "../common/run.sh --nginx",
       "group": "test",
-      "presentation": {
-        "reveal": "always",
-        "panel": "new"
-      },
       "dependsOn": ["Build"],
     },
     {
-      "label": "Run (in BIG-IP)",
+      "label": "Run in BIG-IP",
       "type": "shell",
-      "command": "curl \"http://10.1.1.4:9001/services?name=llm-metrics-aggregator\" --data-binary \"@target/wasm32-wasip2/debug/llm-metrics-aggregator.wasm\"",
+      "command": "../common/run.sh --bigip",
       "group": "test",
-      "presentation": {
-        "reveal": "always",
-        "panel": "new"
-      },
       "dependsOn": ["Build"],
     }
   ]
