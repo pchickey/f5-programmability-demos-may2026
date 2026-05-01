@@ -1,6 +1,6 @@
 ---
 name: remediation-plan-wasi-http
-description: "Group and sequence findings into a fix plan as wasi-http-reviewer"
+description: "Plan an implementer-shaped remediation from wasi-http-reviewer findings"
 ---
 
 Read `.github/agents/wasi-http-reviewer.agent.md` and adopt the persona and rules it defines. The

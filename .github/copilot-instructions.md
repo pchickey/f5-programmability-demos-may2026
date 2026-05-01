@@ -2,7 +2,21 @@
 
 ## Repository overview
 
-Each numbered directory (`01-hello-world`, `02-read-write-headers`, …) is an independent Cargo project. They demonstrate F5 programmability: Rust code compiled to `wasm32-wasip2` and deployed as HTTP request handlers inside NGINX (via `nginx-wasmtime`) on an F5 UDF lab environment.
+Each numbered directory is an independent Cargo project demonstrating F5 programmability: Rust compiled to `wasm32-wasip2` and deployed as an HTTP request handler inside NGINX (via `nginx-wasmtime`) or BIG-IP TMM on an F5 UDF lab environment.
+
+| Directory | Demo |
+|-----------|------|
+| `00-introduction` | Lab orientation |
+| `01-hello-world` | Minimal HTTP handler |
+| `02-read-write-headers` | Request/response header manipulation |
+| `03-redact-response-body` | Body rewrite (redaction) |
+| `04-more-body-mechanisms` | Body read, transform, forward |
+| `05-weather-demo` | Outbound HTTP + JSON parsing |
+| `06-image-transcode` | Image processing with embedded assets |
+| `07-llm-metrics-aggregator` | Outbound HTTP fan-out + aggregation |
+| `08-reverse-response-body` | Streaming body reversal |
+| `98-kv-store` | Host KV-store integration |
+| `99-example-origin` | Mock upstream (not a wasm guest) |
 
 This repository is actively changing, so update this file often.
 
@@ -12,15 +26,18 @@ Each demo is its own Cargo project. Work inside the demo directory.
 
 ```sh
 cd 01-hello-world
-cargo build --target wasm32-wasip2
-# Deploy the compiled binary to platypus:
-curl "http://10.1.1.4:9000/services?name=hello-world" \
-  --data-binary "@target/wasm32-wasip2/debug/hello-world.wasm"
+../common/build.sh                  # cargo build --target wasm32-wasip2
+../common/run.sh --nginx            # upload to NGINX via platypus
+../common/run.sh --bigip            # upload to BIG-IP TMM via platypus
 ```
 
-The VS Code "Run (in NGINX)" task in `.vscode/tasks.json` builds and deploys automatically via direct curl.
+The VS Code **Build**, **Run in NGINX**, and **Run in BIG-IP** tasks in each demo's `.vscode/tasks.json` invoke these scripts automatically.
 
-`platypus` POSTs the `.wasm` binary to NGINX's wasmtime module at `http://10.1.1.4:9000/services?name=<service-name>`. No test suite exists; validation is manual via HTTP requests to the deployed service.
+`platypus` POSTs the `.wasm` binary to the appropriate wasmtime endpoint:
+- NGINX: `http://10.1.1.4:9000/services?name=<binary-name>` (env: `PLATYPUS_NGINX`)
+- BIG-IP: `http://10.1.1.4:9001/services?name=<binary-name>` (env: `PLATYPUS_BIGIP`)
+
+No test suite exists; validation is manual via HTTP requests to the deployed service.
 
 ## Creating a new demo
 
@@ -34,15 +51,21 @@ Each demo needs these files alongside `Cargo.toml` and `src/main.rs`:
     {
       "label": "Build",
       "type": "shell",
-      "command": "cargo build --target wasm32-wasip2",
+      "command": "../common/build.sh",
       "group": { "kind": "build", "isDefault": true }
     },
     {
-      "label": "Run (in NGINX)",
+      "label": "Run in NGINX",
       "type": "shell",
-      "command": "curl \"http://10.1.1.4:9000/services?name=<service-name>\" --data-binary \"@target/wasm32-wasip2/debug/<service-name>.wasm\"",
+      "command": "../common/run.sh --nginx",
       "group": "test",
-      "presentation": { "reveal": "always", "panel": "new" },
+      "dependsOn": ["Build"]
+    },
+    {
+      "label": "Run in BIG-IP",
+      "type": "shell",
+      "command": "../common/run.sh --bigip",
+      "group": "test",
       "dependsOn": ["Build"]
     }
   ]
@@ -60,7 +83,7 @@ Each demo needs these files alongside `Cargo.toml` and `src/main.rs`:
   ```
 - **Runtime**: single-threaded `wstd` reactor. `tokio`/`smol`/`async-std` do not link. Never use `std::thread::sleep` or blocking I/O inside `async`.
 - **Deployment target**: `wasm32-wasip2` (passed via `--target` flag or set in `.vscode/tasks.json`). Never target `wasm32-wasip1`.
-- **`platypus`** orchestrates NGINX + wasm services on the UDF host. Systemd services in `.udf/` manage startup.
+- **`platypus`** orchestrates NGINX + wasm services on the UDF host. Systemd services in `.udf/` manage startup. BIG-IP TMM is also supported; see `common/run.sh`.
 - **`99-example-origin`** is a mock upstream server (not an nginx-wasm guest demo) that exposes `/people.json`, `/show_headers`, `/image.png`, `/metrics.json`, and `/reader`. Demos that call outbound HTTP target it at `http://10.1.1.4:8001/`.
 
 ## Key conventions
@@ -98,14 +121,30 @@ not summarize or inline their contents into this file — that duplicates
 content that updates with the agent.
 <!-- END agentbonk-scope:wasi-http-reviewer -->
 
-## Code review
+<!-- BEGIN agentbonk-scope:wasm-friend -->
+The `wasm-friend` Copilot custom agent (`.github/agents/wasm-friend.agent.md`),
+its reference files under `.github/agents/wasm-friend/refs/`, and the
+companion skills under `.github/skills/` are loaded on demand when the
+user invokes `/agent wasm-friend` or one of the bundled `/<cmd>` skills. Do
+not summarize or inline their contents into this file — that duplicates
+content that updates with the agent.
+<!-- END agentbonk-scope:wasm-friend -->
 
-Use the bundled `wasi-http-reviewer` agent or the prompts in `.github/prompts/` to review changes:
+## Code review and implementation
+
+Use the bundled `wasi-http-reviewer` agent to review changes:
 
 ```
-/review-wasi-http
-/critique-wasi-http
-/remediation-plan-wasi-http
+/review-wasi-http          # standard diff review
+/critique-wasi-http        # hard-look pass (every corpus-licensed concern)
+/remediation-plan-wasi-http  # sequenced fix plan from findings
 ```
 
-Reference material for the reviewer (canonical shapes, hazard list, host constraints) lives in `.github/agents/wasi-http-reviewer/refs/`.
+Use the bundled `wasm-friend` agent to implement or propose changes:
+
+```
+/wasm-friend-implement     # implement the task as a diff with edits and summary
+/wasm-friend-propose       # draft a structured proposal — no edits performed
+```
+
+Reference material for both agents (canonical shapes, hazard list, host constraints) lives in `.github/agents/wasi-http-reviewer/refs/` and `.github/agents/wasm-friend/refs/`.
