@@ -37,5 +37,14 @@ that list of cities. These fetches happen concurrently.
 Finally, the server responds with the complete list of locations and their
 current weather, encoded in JSON.
 
+## Concurrency and Async Rust
 
+Async Rust ought to be pretty familiar if you ever used async/await in the C#
+language, but it usually is one of the more difficult topics in Rust to learn.
+
+If you are just learning the Rust, make sure you have a solid understanding of
+ownership and traits, then read two or three "beginer guides" to Rust you find
+by googling, and finally, block out a couple of hours to carefully read (and
+maybe even program along at home!) this incredible article from Amos:
+[https://fasterthanli.me/articles/request-coalescing-in-async-rust](https://fasterthanli.me/articles/request-coalescing-in-async-rust)
 
