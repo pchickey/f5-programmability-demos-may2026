@@ -1,7 +1,7 @@
 //! Example of running the LLM token counter.
 //!
 //! ```shell-session
-//! $ curl http://localhost:8000 -d 'tell me about the sun, in five words or less'
+//! $ curl http://10.1.1.4:8000 -d 'tell me about the sun, in five words or less'
 //! ```
 
 use f5_kv_store::F5KvStore;
@@ -46,11 +46,11 @@ async fn main(mut req: Request<Body>) -> Result<Response<Body>, Error> {
         .as_object_mut()
         .ok_or_else(|| anyhow!("response body was object"))?;
     object.insert(
-        PROMPT_COUNT_KEY.to_owned(),
+        "total_prompt_eval_count".to_owned(),
         Value::from(count_sums.total_prompt_eval_count),
     );
     object.insert(
-        RESPONSE_COUNT_KEY.to_owned(),
+        "total_eval_count".to_owned(),
         Value::from(count_sums.total_eval_count),
     );
 
