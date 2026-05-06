@@ -75,8 +75,8 @@ working with the [`Body`] type:
    Try asking curl to print the status code after the body:
 
    ```sh
-   $ curl -w "%{http_code}" 10.1.1.4:8000/something
-   not found: something
+   $ curl -w "\n%{http_code}" 10.1.1.4:8000/something
+   not found: "/something"
    404
    ```
 
