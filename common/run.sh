@@ -1,5 +1,4 @@
 #!/bin/bash
-
 # If you are using these scripts external to UDF, set the environment
 # variables PLATYPUS_NGINX and PLATYPUS_BIGIP to the URLs you copy out of the
 # UDF Access Methods.
@@ -25,10 +24,12 @@ metadata=$(cargo metadata --format-version 1)
 # If there is an argument passed to this script, upload that target
 if [[ -n "$1" ]]; then
     # Search for binary target with name matching $1
-    binary_name=$(echo "$metadata" | jq -r --arg name "$1" '[.packages[] | select(.manifest_path | endswith("Cargo.toml")) | .targets[] | select(.kind[] == "bin" and .name == $name)] | if length == 0 then error("Binary target not found: \($name)") else .[0].name end')
+    binary_name=$(echo "$metadata" | jq -r --arg name "$1" '[.packages[] | select(.manifest_path | endswith("Cargo.toml") and (contains("/.cargo/") | not)) | .targets[] | select(.kind[] == "bin" and .name == $name)] | if length == 0 then error("Binary target not found: \($name)") else .[0].name end')
+
 else
     # Require exactly one binary target
-    binary_name=$(echo "$metadata" | jq -r '[.packages[] | select(.manifest_path | endswith("Cargo.toml")) | .targets[] | select(.kind[] == "bin")] | if length > 1 then error("More than one binary target found. Provide a binary name as an argument") else .[0].name end')
+    binary_name=$(echo "$metadata" | jq -r '[.packages[] | select(.manifest_path | endswith("Cargo.toml") and (contains("/.cargo/") | not)) | .targets[] | select(.kind[] == "bin")] | if length > 1 then error("More than one binary target found") else .[0].name end')
+
 fi
 
 # Upload the debug build for that target. Probably would be smart to accept a
