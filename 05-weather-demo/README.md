@@ -18,7 +18,7 @@ city name might be ambigious.
 For example, a request such as:
 
 ```
-curl http://10.1.1.14:8000?city=portland
+curl http://10.1.1.4:8000?city=portland
 ```
 
 will first fetch from a geocoding API to find locations named "portland", and
@@ -28,7 +28,7 @@ You can limit how many locations by adding a query paramter "count". When not
 provided, it defaults to 10.
 
 ```
-curl http://10.1.1.14:8000?city=portland&count=2
+curl http://10.1.1.4:8000?city=portland&count=2
 ```
 
 It will then fetch from a weather API according to each lat/lon coordinate in
