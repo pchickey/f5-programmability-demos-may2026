@@ -11,7 +11,7 @@ working with the [`Body`] type:
    and then constructing the body from a string.
    Try this one out with:
    ```sh
-   $ curl 10.1.1.4:8000 -d "Hello, F5 Wasm Programmability!\n"
+   $ curl 10.1.1.4:8000 -d "Hello, F5 Wasm Programmability!"
    Hello, World!
    Request body was:
    Hello, F5 Wasm Programmability!
@@ -33,7 +33,7 @@ working with the [`Body`] type:
    possible, in particular avoiding an unneeded copy into and out of the
    WebAssembly sandbox.
    ```sh
-   $ curl 10.1.1.4/request_body -d "Hello, echo server\n"
+   $ curl 10.1.1.4/request_body -d "Hello, echo server"
    Hello, echo server
    ```
 4. Constructing a response body from another response body. This is a much
@@ -49,7 +49,7 @@ working with the [`Body`] type:
    streaming bodies are fully implemented, so if you run this example in
    BIG-IP you will see each line of the output arrive 0.5 seconds apart:
    ```sh
-   $ curl 10.1.1.4:3000
+   $ curl 10.1.1.4:3000/stream_response_body
    Hello, Gussie
    Hello, Willa
    Hello, Sparky
@@ -63,7 +63,7 @@ working with the [`Body`] type:
    2 seconds and then the entire output will arrive. This is a bug specific to
    the NGINX Wasm integration, and a fix is in progress!
    ```sh
-   $ curl 10.1.1.4:8000
+   $ curl 10.1.1.4:8000/stream_response_body
    Hello, Gussie
    Hello, Willa
    Hello, Sparky
